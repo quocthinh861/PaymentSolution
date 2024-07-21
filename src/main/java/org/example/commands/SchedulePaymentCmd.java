@@ -29,7 +29,7 @@ public class SchedulePaymentCmd implements Command<Void> {
         }
 
         if (!args[1].matches("\\d{2}/\\d{2}/\\d{4}")) {
-            System.out.println("Date must be in the format dd-MM-yyyy");
+            System.out.println("Date must be in the format dd/MM/yyyy");
             return false;
         }
 
@@ -43,11 +43,11 @@ public class SchedulePaymentCmd implements Command<Void> {
         }
 
         int billId;
-        Date scheduleTime;
+        java.sql.Date scheduleTime;
         try {
             billId = Integer.parseInt(args[0]);
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            scheduleTime = dateFormat.parse(args[1]);
+            scheduleTime = new java.sql.Date(dateFormat.parse(args[1]).getTime());
 
             if (scheduleTime.before(new Date())) {
                 System.out.println("Schedule time must be in the future.");
@@ -58,6 +58,7 @@ public class SchedulePaymentCmd implements Command<Void> {
             return null;
         }
 
+        paymentService.addScheduledPayment(billId, scheduleTime);
         schedulePayment(billId, scheduleTime);
         return null;
     }

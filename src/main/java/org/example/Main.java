@@ -2,21 +2,47 @@ package org.example;
 
 import org.example.commands.Command;
 import org.example.commands.ExitCmd;
+import org.example.repositories.daos.BillDAO;
 import org.example.repositories.daos.CustomerDAO;
 import org.example.factories.CommandFactory;
 import org.example.factories.ConnectionFactory;
 import org.example.models.Customer;
+import org.example.repositories.daos.PaymentDAO;
+import org.example.services.PaymentProcessorTask;
+import org.example.services.PaymentService;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Timer;
 
 public class Main {
+
+    public static void loadScheduledPayments(Connection conn) {
+        PaymentService paymentService = new PaymentService(
+                new BillDAO(),
+                new PaymentDAO()
+        );
+        String sql = "SELECT * FROM scheduled_payments WHERE schedule_date > CURRENT_DATE";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                int billId = rs.getInt("bill_id");
+                Date paymentDate = rs.getDate("schedule_date"); // Use Timestamp for DATETIME columns
+
+                Timer timer = new Timer();
+                timer.schedule(new PaymentProcessorTask(paymentService, billId), paymentDate);
+            }
+            System.out.println("Scheduled payments loaded successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void initializeDatabase(Connection conn) throws SQLException, IOException {
         Statement stmt = conn.createStatement();
@@ -24,6 +50,7 @@ public class Main {
         if (is != null) {
             String sql = new String(is.readAllBytes());
             stmt.execute(sql);
+            System.out.println("Database initialized successfully.");
         } else {
             throw new RuntimeException("Failed to load database.sql");
         }
@@ -36,6 +63,7 @@ public class Main {
 
         try (Connection conn = ConnectionFactory.getConnection()) {
             initializeDatabase(conn);
+            loadScheduledPayments(conn);
 
             while (true) {
                 try {

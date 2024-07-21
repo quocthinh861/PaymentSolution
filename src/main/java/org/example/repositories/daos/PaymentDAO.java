@@ -39,4 +39,17 @@ public class PaymentDAO implements PaymentRepository {
         }
         return payments;
     }
+
+    @Override
+    public void addScheduledPayment(int billId, Date scheduleTime) throws SQLException {
+        try(Connection conn = ConnectionFactory.getConnection()) {
+            String sql = "INSERT INTO scheduled_payments (customer_id, bill_id, schedule_date) VALUES (?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, UserContext.getInstance().getUserId());
+                stmt.setInt(2, billId);
+                stmt.setDate(3, scheduleTime);
+                stmt.executeUpdate();
+            }
+        }
+    }
 }

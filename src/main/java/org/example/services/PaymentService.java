@@ -29,6 +29,14 @@ public class PaymentService {
         billDAO.addPayment(id, conn);
     }
 
+    public void addScheduledPayment(int billId, Date dateTime) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            paymentDAO.addScheduledPayment(billId, dateTime);
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
     public void payBill(int id, Connection conn) throws SQLException {
         Bill bill = billDAO.getBill(id, conn);
         if (bill == null) {
