@@ -25,10 +25,12 @@ public class CommandFactory {
                 return new AddFundCmd(customerDAO);
             case DUE_DATE:
                 return new DueDateCmd(billDAO);
-                case LIST_PAYMENT:
+            case LIST_PAYMENT:
                 return new ListPaymentCmd(paymentService);
             case EXIT:
                 return new ExitCmd();
+            case HELP:
+                return new HelpCmd();
             default:
 
         }

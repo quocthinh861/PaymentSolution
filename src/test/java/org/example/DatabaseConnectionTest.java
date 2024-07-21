@@ -3,6 +3,7 @@ package org.example;
 import org.example.factories.ConnectionFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,8 +18,8 @@ public class DatabaseConnectionTest {
 
     protected static Connection connection;
 
-    @BeforeAll
-    public static void init() throws SQLException, IOException {
+    @BeforeEach
+    public void init() throws SQLException, IOException {
         UserContext.getInstance().setUserId(1);
         ConnectionFactory.setEnvironment(ConnectionFactory.Environment.TEST);
         connection = ConnectionFactory.getConnection();

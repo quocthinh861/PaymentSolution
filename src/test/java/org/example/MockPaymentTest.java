@@ -72,14 +72,14 @@ public class MockPaymentTest {
 
         }).when(billDAO).getBill(anyInt(), any(Connection.class));
         doNothing().when(billDAO).updateBillState(anyInt(), any(Connection.class));
-        doNothing().when(billDAO).updateCustomerBalance(anyDouble(), any(Connection.class));
-        doNothing().when(billDAO).addPayment(anyInt(), anyDouble(), any(Connection.class));
+        doNothing().when(billDAO).updateCustomerBalance(anyInt(), any(Connection.class));
+        doNothing().when(billDAO).addPayment(anyInt(), any(Connection.class));
 
         paymentService.payBills("1,2");
 
         verify(billDAO, times(2)).updateBillState(anyInt(), any(Connection.class));
-        verify(billDAO, times(2)).updateCustomerBalance(anyDouble(), any(Connection.class));
-        verify(billDAO, times(2)).addPayment(anyInt(), anyDouble(), any(Connection.class));
+        verify(billDAO, times(2)).updateCustomerBalance(anyInt(), any(Connection.class));
+        verify(billDAO, times(2)).addPayment(anyInt(), any(Connection.class));
     }
 
     @Test
@@ -105,8 +105,8 @@ public class MockPaymentTest {
         paymentService.payBills("1,2");
 
         verify(billDAO, times(1)).updateBillState(anyInt(), any(Connection.class));
-        verify(billDAO, times(1)).updateCustomerBalance(anyDouble(), any(Connection.class));
-        verify(billDAO, times(1)).addPayment(anyInt(), anyDouble(), any(Connection.class));
+        verify(billDAO, times(1)).updateCustomerBalance(anyInt(), any(Connection.class));
+        verify(billDAO, times(1)).addPayment(anyInt(), any(Connection.class));
     }
 
     @Test
@@ -121,8 +121,8 @@ public class MockPaymentTest {
         paymentService.payBills("1");
 
         verify(billDAO, times(0)).updateBillState(anyInt(), any(Connection.class));
-        verify(billDAO, times(0)).updateCustomerBalance(anyDouble(), any(Connection.class));
-        verify(billDAO, times(0)).addPayment(anyInt(), anyDouble(), any(Connection.class));
+        verify(billDAO, times(0)).updateCustomerBalance(anyInt(), any(Connection.class));
+        verify(billDAO, times(0)).addPayment(anyInt(), any(Connection.class));
     }
 
     @Test
@@ -133,8 +133,8 @@ public class MockPaymentTest {
         paymentService.payBills("1");
 
         verify(billDAO, never()).updateBillState(anyInt(), any(Connection.class));
-        verify(billDAO, never()).updateCustomerBalance(anyDouble(), any(Connection.class));
-        verify(billDAO, never()).addPayment(anyInt(), anyDouble(), any(Connection.class));
+        verify(billDAO, never()).updateCustomerBalance(anyInt(), any(Connection.class));
+        verify(billDAO, never()).addPayment(anyInt(), any(Connection.class));
     }
 
 
@@ -167,13 +167,13 @@ public class MockPaymentTest {
         });
 
         doNothing().when(billDAO).updateBillState(anyInt(), any(Connection.class));
-        doNothing().when(billDAO).updateCustomerBalance(anyDouble(), any(Connection.class));
-        doNothing().when(billDAO).addPayment(anyInt(), anyDouble(), any(Connection.class));
+        doNothing().when(billDAO).updateCustomerBalance(anyInt(), any(Connection.class));
+        doNothing().when(billDAO).addPayment(anyInt(), any(Connection.class));
 
         paymentService.payBills("1,2,3");
 
         verify(billDAO, times(2)).updateBillState(anyInt(), any(Connection.class));
-        verify(billDAO, times(2)).updateCustomerBalance(anyDouble(), any(Connection.class));
-        verify(billDAO, times(2)).addPayment(anyInt(), anyDouble(), any(Connection.class));
+        verify(billDAO, times(2)).updateCustomerBalance(anyInt(), any(Connection.class));
+        verify(billDAO, times(2)).addPayment(anyInt(), any(Connection.class));
     }
 }

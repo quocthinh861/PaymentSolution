@@ -14,7 +14,7 @@ public class PaymentDAO implements PaymentRepository {
     @Override
     public List<Payment> listPayments() {
         List<Payment> payments = new ArrayList<>();
-        String sql = "SELECT p.*, b.state FROM payments p " +
+        String sql = "SELECT p.*, b.state, b.amount FROM payments p " +
                 "JOIN bills b ON p.bill_id = b.id WHERE p.customer_id = ?";
         try (Connection connection = ConnectionFactory.getConnection()) {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {

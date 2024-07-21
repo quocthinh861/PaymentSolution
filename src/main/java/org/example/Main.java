@@ -35,9 +35,7 @@ public class Main {
         CustomerDAO customerDAO = new CustomerDAO();
 
         try (Connection conn = ConnectionFactory.getConnection()) {
-            System.out.println("Payment System connected to database.\n");
             initializeDatabase(conn);
-            System.out.println("Populated database with mock data.\n");
 
             while (true) {
                 try {
@@ -46,6 +44,8 @@ public class Main {
                     for (Customer customer : customers) {
                         System.out.println("User ID: " + customer.getId() + " | Balance: " + customer.getBalance());
                     }
+
+                    System.out.println("Enter 'help' to see available commands\n");
 
                     System.out.print("> ");
                     String userIdInput = sc.nextLine();
@@ -64,7 +64,6 @@ public class Main {
             }
 
             while (true) {
-                System.out.println("Enter 'exit' to exit the Payment System");
                 Customer customer = customerDAO.getCustomerInfo();
 
                 System.out.println("Your current balance is: " + customer.getBalance() + "\n");

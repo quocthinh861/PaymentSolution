@@ -24,8 +24,8 @@ public class PaymentService {
 
     public void processPayment(int id, double amount, Connection conn) throws SQLException {
         billDAO.updateBillState(id, conn);
-        billDAO.updateCustomerBalance(amount, conn);
-        billDAO.addPayment(id, amount, conn);
+        billDAO.updateCustomerBalance(id, conn);
+        billDAO.addPayment(id, conn);
     }
 
     public void payBill(int id, Connection conn) throws SQLException {

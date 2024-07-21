@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS bills (
 -- Create payments table with foreign keys referencing customers and bills
 CREATE TABLE IF NOT EXISTS payments (
                                         id INT AUTO_INCREMENT,
-                                        amount DECIMAL(10, 2),
     payment_date DATE,
     customer_id INT,
     bill_id INT,
