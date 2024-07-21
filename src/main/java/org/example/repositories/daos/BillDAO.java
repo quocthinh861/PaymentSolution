@@ -97,22 +97,28 @@ public class BillDAO implements BillRepository {
     }
 
     @Override
-    public void updateCustomerBalance(double amount, Connection conn) throws SQLException {
-        String sql = "UPDATE customers SET balance = balance - ? WHERE id = ?";
+    public void updateCustomerBalance(int billId, Connection conn) throws SQLException {
+        String sql = "UPDATE customers SET balance = balance - " +
+                "(SELECT amount FROM bills WHERE id = ? AND customer_id = ?) " +
+                "WHERE id = ?";
+
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setDouble(1, amount);
+            stmt.setInt(1, billId);
             stmt.setInt(2, UserContext.getInstance().getUserId());
-            stmt.executeUpdate();
+            stmt.setInt(3, UserContext.getInstance().getUserId());
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Bill not found or balance update failed.");
+            }
         }
     }
 
     @Override
-    public void addPayment(int id, double amount, Connection conn) throws SQLException {
-        String sql = "INSERT INTO payments (amount, bill_id, customer_id, payment_date) VALUES (?, ?, ?, CURRENT_DATE())";
+    public void addPayment(int id, Connection conn) throws SQLException {
+        String sql = "INSERT INTO payments (bill_id, customer_id, payment_date) VALUES (?, ?, CURRENT_DATE())";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setDouble(1, amount);
-            stmt.setInt(2, id);
-            stmt.setInt(3, UserContext.getInstance().getUserId());
+            stmt.setInt(1, id);
+            stmt.setInt(2, UserContext.getInstance().getUserId());
             stmt.executeUpdate();
         }
     }
