@@ -28,8 +28,8 @@ public class SchedulePaymentCmd implements Command<Void> {
             return false;
         }
 
-        if (!args[1].matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}")) {
-            System.out.println("Date must be in the format yyyy-MM-dd HH:mm:ss");
+        if (!args[1].matches("\\d{2}/\\d{2}/\\d{4}")) {
+            System.out.println("Date must be in the format dd-MM-yyyy");
             return false;
         }
 
@@ -38,12 +38,21 @@ public class SchedulePaymentCmd implements Command<Void> {
 
     @Override
     public Void execute(String... args) {
+        if (!validate(args)) {
+            return null;
+        }
+
         int billId;
         Date scheduleTime;
         try {
             billId = Integer.parseInt(args[0]);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             scheduleTime = dateFormat.parse(args[1]);
+
+            if (scheduleTime.before(new Date())) {
+                System.out.println("Schedule time must be in the future.");
+                return null;
+            }
         } catch (Exception e) {
             System.out.println("Invalid arguments. Please provide a valid billId and schedule time.");
             return null;

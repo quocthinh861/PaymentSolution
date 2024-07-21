@@ -9,7 +9,8 @@ public enum CommandEnum {
     ADD_FUND("add", "add <amount> - Add fund to balance"),
     LIST_PAYMENT("list_payment", "list_payment - List all payments"),
     EXIT("exit", "exit - Exit the program"),
-    HELP("help", "help - Display available commands");
+    HELP("help", "help - Display available commands"),
+    SCHEDULE("schedule", "schedule <billId> <due_date> - Schedule a payment");
 
     private final String command;
 

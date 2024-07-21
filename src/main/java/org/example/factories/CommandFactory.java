@@ -31,6 +31,8 @@ public class CommandFactory {
                 return new ExitCmd();
             case HELP:
                 return new HelpCmd();
+            case SCHEDULE:
+                return new SchedulePaymentCmd(paymentService);
             default:
 
         }
