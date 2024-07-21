@@ -45,8 +45,6 @@ public class Main {
                         System.out.println("User ID: " + customer.getId() + " | Balance: " + customer.getBalance());
                     }
 
-                    System.out.println("Enter 'help' to see available commands\n");
-
                     System.out.print("> ");
                     String userIdInput = sc.nextLine();
                     int userId = userIdInput.isEmpty() ? 1 : Integer.parseInt(userIdInput);
@@ -65,7 +63,7 @@ public class Main {
 
             while (true) {
                 Customer customer = customerDAO.getCustomerInfo();
-
+                System.out.println("Enter 'help' to see available commands\n");
                 System.out.println("Your current balance is: " + customer.getBalance() + "\n");
                 System.out.print("> ");
 
